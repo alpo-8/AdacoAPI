@@ -35,7 +35,7 @@ namespace AdacoAPI
 
         private void MessageHandler(object sender, EventDispatcher.MessageArgs contains)
         {
-            EventDispatcher.Instance.RaiseFormMessage(true, "validation started");
+            //EventDispatcher.Instance.RaiseFormMessage(true, "validation started");
             StartValidation();
         }
 
