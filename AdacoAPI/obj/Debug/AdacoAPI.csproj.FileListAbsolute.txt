@@ -1,0 +1,30 @@
+C:\Users\AlPo\Documents\Visual Studio 2015\Projects\AdacoAPI\AdacoAPI\bin\Debug\AdacoAPI.exe.config
+C:\Users\AlPo\Documents\Visual Studio 2015\Projects\AdacoAPI\AdacoAPI\bin\Debug\AdacoAPI.exe
+C:\Users\AlPo\Documents\Visual Studio 2015\Projects\AdacoAPI\AdacoAPI\bin\Debug\AdacoAPI.pdb
+C:\Users\AlPo\Documents\Visual Studio 2015\Projects\AdacoAPI\AdacoAPI\obj\Debug\AdacoAPI.AdacoAPIForm.resources
+C:\Users\AlPo\Documents\Visual Studio 2015\Projects\AdacoAPI\AdacoAPI\obj\Debug\AdacoAPI.Properties.Resources.resources
+C:\Users\AlPo\Documents\Visual Studio 2015\Projects\AdacoAPI\AdacoAPI\obj\Debug\AdacoAPI.csproj.GenerateResource.Cache
+C:\Users\AlPo\Documents\Visual Studio 2015\Projects\AdacoAPI\AdacoAPI\obj\Debug\AdacoAPI.exe
+C:\Users\AlPo\Documents\Visual Studio 2015\Projects\AdacoAPI\AdacoAPI\obj\Debug\AdacoAPI.pdb
+C:\Users\AlPo\Documents\Visual Studio 2015\Projects\AdacoAPI\AdacoAPI\obj\Debug\AdacoAPI.csprojResolveAssemblyReference.cache
+F:\AdacoAPI\AdacoAPI\bin\Debug\AdacoAPI.exe.config
+F:\AdacoAPI\AdacoAPI\obj\Debug\AdacoAPI.exe
+F:\AdacoAPI\AdacoAPI\obj\Debug\AdacoAPI.pdb
+F:\AdacoAPI\AdacoAPI\bin\Debug\AdacoAPI.exe
+F:\AdacoAPI\AdacoAPI\bin\Debug\AdacoAPI.pdb
+F:\AdacoAPI\AdacoAPI\obj\Debug\AdacoAPI.csprojResolveAssemblyReference.cache
+F:\AdacoAPI\AdacoAPI\obj\Debug\AdacoAPI.AdacoAPIForm.resources
+F:\AdacoAPI\AdacoAPI\obj\Debug\AdacoAPI.Properties.Resources.resources
+F:\AdacoAPI\AdacoAPI\obj\Debug\AdacoAPI.csproj.GenerateResource.Cache
+E:\AdacoAPI\AdacoAPI\bin\Debug\AdacoAPI.exe.config
+E:\AdacoAPI\AdacoAPI\bin\Debug\AdacoAPI.exe
+E:\AdacoAPI\AdacoAPI\bin\Debug\AdacoAPI.pdb
+E:\AdacoAPI\AdacoAPI\bin\Debug\ColorCode.dll
+E:\AdacoAPI\AdacoAPI\bin\Debug\ColorCode.pdb
+E:\AdacoAPI\AdacoAPI\obj\Debug\AdacoAPI.AdacoAPIForm.resources
+E:\AdacoAPI\AdacoAPI\obj\Debug\AdacoAPI.Properties.Resources.resources
+E:\AdacoAPI\AdacoAPI\obj\Debug\AdacoAPI.csproj.GenerateResource.Cache
+E:\AdacoAPI\AdacoAPI\obj\Debug\AdacoAPI.exe
+E:\AdacoAPI\AdacoAPI\obj\Debug\AdacoAPI.pdb
+F:\AdacoAPI\AdacoAPI\bin\Debug\ColorCode.dll
+F:\AdacoAPI\AdacoAPI\bin\Debug\ColorCode.pdb
