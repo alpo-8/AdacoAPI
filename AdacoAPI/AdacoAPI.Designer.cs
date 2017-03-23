@@ -170,6 +170,7 @@
             this.responseTextBox.TabIndex = 18;
             this.responseTextBox.Text = "";
             this.responseTextBox.WordWrap = false;
+            this.responseTextBox.TextChanged += new System.EventHandler(this.responseTextBox_TextChanged);
             // 
             // responseLabel
             // 

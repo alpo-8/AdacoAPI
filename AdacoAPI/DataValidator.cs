@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using static AdacoAPI.AdacoAPIForm;
 //using static AdacoAPI.Data;
 using static AdacoAPI.DataStructs;
-using static AdacoAPI.TaskBroker;
+using static AdacoAPI.MainAuth;
 
 namespace AdacoAPI
 {
@@ -77,7 +77,7 @@ namespace AdacoAPI
                 Uri = new Uri(_onFormData.Endpoint + _onFormData.Parameters.Keys.Aggregate(resource, (current, inx) => current.Replace(inx, _onFormData.Parameters[inx]))),
                 Headers = _onFormData.AdacoHeaders
             }; //NO MEDIA HERE
-            _currentRequest.Headers["Adaco-Authorization"] = AuthKey.GenerateAuthHeader(_currentRequest.Uri,_currentRequest.Headers["Adaco-Timestamp"]);
+            
 
 
             Data.CurrentRequest = _currentRequest;
@@ -85,7 +85,7 @@ namespace AdacoAPI
             Task<string> task = RequestSender.SendRequest(Data.CurrentRequest); // TODO: return headers on UI
             string result = await task;
 
-            EventDispatcher.Instance.RaiseFormMessage(result);
+            //EventDispatcher.Instance.RaiseFormMessage(result);
         }
     }
 }

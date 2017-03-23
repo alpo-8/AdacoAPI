@@ -31,8 +31,6 @@ F:\AdacoAPI\AdacoAPI\bin\Debug\ColorCode.pdb
 C:\Users\AlPo\Source\Repos\AdacoAPI\AdacoAPI\bin\Debug\AdacoAPI.exe.config
 C:\Users\AlPo\Source\Repos\AdacoAPI\AdacoAPI\bin\Debug\AdacoAPI.exe
 C:\Users\AlPo\Source\Repos\AdacoAPI\AdacoAPI\bin\Debug\AdacoAPI.pdb
-C:\Users\AlPo\Source\Repos\AdacoAPI\AdacoAPI\bin\Debug\ColorCode.dll
-C:\Users\AlPo\Source\Repos\AdacoAPI\AdacoAPI\bin\Debug\ColorCode.pdb
 C:\Users\AlPo\Source\Repos\AdacoAPI\AdacoAPI\obj\Debug\AdacoAPI.csprojResolveAssemblyReference.cache
 C:\Users\AlPo\Source\Repos\AdacoAPI\AdacoAPI\obj\Debug\AdacoAPI.AdacoAPIForm.resources
 C:\Users\AlPo\Source\Repos\AdacoAPI\AdacoAPI\obj\Debug\AdacoAPI.Properties.Resources.resources

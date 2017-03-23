@@ -20,31 +20,31 @@ namespace AdacoAPI
 
         private EventDispatcher() { }
 
-        //public class MessageArgs : EventArgs
-        //{
-        //    public MessageArgs(bool s, string mes)
-        //    {
-        //        this.state = s;
-        //        this.message = mes;
-        //    }
-        //    private bool state;
-        //    private string message;
-        //    public bool State
-        //    {
-        //        get { return state; }
-        //        set { state = value; }
-        //    }
-        //    public string Message
-        //    {
-        //        get { return message; }
-        //        set { message = value; }
-        //    }
-        //}
+        public class FormArgs : EventArgs
+        {
+            public FormArgs(string ctrl, string txt)
+            {
+                this.control = ctrl;
+                this.text = txt;
+            }
+            private string control;
+            private string text;
+            public string Control
+            {
+                get { return control; }
+                set { control = value; }
+            }
+            public string Text
+            {
+                get { return text; }
+                set { text = value; }
+            }
+        }
 
         // TODO: REWRITE
 
         public event EventHandler<string> MainMessage; // events sent TO MAIN
-        public event EventHandler<string> FormMessage; // events sent TO FORM
+        public event EventHandler<FormArgs> FormMessage; // events sent TO FORM
         public event EventHandler<string> DataMessage; // events sent TO VALIDATOR
         public event EventHandler<string> SenderMessage; // events sent TO SENDER
 
@@ -53,9 +53,9 @@ namespace AdacoAPI
             MainMessage?.Invoke(this, message);
         }
 
-        public void RaiseFormMessage(string message)
+        public void RaiseFormMessage(string control, string text)
         {
-            FormMessage?.Invoke(this, message);
+            FormMessage?.Invoke(this, new FormArgs(control, text));
         }
 
         public void RaiseDataMessage(string message)

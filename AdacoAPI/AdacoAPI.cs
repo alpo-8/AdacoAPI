@@ -7,17 +7,28 @@ using System.Xml;
 using static AdacoAPI.Data;
 using static AdacoAPI.DataStructs;
 using System.Xml.Linq;
+using System.Threading.Tasks;
+using System.Threading;
+using System.ComponentModel;
 
 namespace AdacoAPI
 {
     public partial class AdacoAPIForm : Form
     {
+        private readonly SynchronizationContext synchronizationContext;
+        private DateTime previousTime = DateTime.Now;
+        private BackgroundWorker bgWorker;
         private static FormData _onFormData;
+        private static RequestData _currentRequest;
         public AdacoAPIForm()
         {
             InitializeComponent();
-            WinequestTabInit();
+            synchronizationContext = SynchronizationContext.Current;
+            WinequestTabInit();  //? async task??
             Subscribe(true);
+            //this.bgWorker = new BackgroundWorker();
+            //this.bgWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgWorker_RunWorkerCompleted);
+            //this.PerformLayout();
         }
 
         private void Subscribe(bool action)
@@ -32,17 +43,54 @@ namespace AdacoAPI
             }
         }
 
-        private void MessageHandler(object sender, string message)
+        private async void MessageHandler(object sender, EventDispatcher.FormArgs changes)
         {
-            PutResponse(message);
+            await Task.Run(() =>
+            {
+                winequestTab.Controls.Cast<Control>()
+                .FirstOrDefault(c => string.Equals(c.Name, changes.Control))
+                .Text = changes.Text;
+            });
+        }
+
+        private async void responseTextBox_TextChanged(object sender, EventArgs e)
+        {
+            await Task.Run(() => XmlHighliter.HighlightRTF(responseTextBox));
+        }
+
+        private void methodBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SetParamControls(Methods.RequestParams(methodBox.Text));
+
+            //this.bgWorker.RunWorkerAsync();
+
+
+            // put param fields
+
+            // put time, 
+            // ON PARAM CHANGED: gen uri, gen auth, put auth
+
+            adacoTimeStampTextBox.Text = DateTime.Now.ToString();
         }
 
         private void requestButton_Click(object sender, EventArgs e)
         {
-            LoadFormData();
             responseTextBox.Text = string.Empty;
-            new DataValidator();
-            EventDispatcher.Instance.RaiseMainMessage("Request Initiated");
+            var thisMethod = Data.Methods.MethodStructByName(_onFormData.MethodName);  // to task
+            Uri ready = PrepareUri().Result;
+            List<string> auth = MainAuth.GetAuthKey(_currentRequest.Uri);
+
+            _onFormData.AdacoHeaders["Adaco-Timestamp"] = auth[0];
+            _onFormData.AdacoHeaders["Adaco-Authorization"] = auth[1];
+
+            LoadFormData();
+
+            _currentRequest = new DataStructs.RequestData()
+            {
+                Method = thisMethod.Type,
+                Uri = ready,
+                Headers = _onFormData.AdacoHeaders
+            }; // NO MEDIA HERE
         }
 
         private void resetButton_Click(object sender, EventArgs e)
@@ -50,11 +98,6 @@ namespace AdacoAPI
             WinequestTabInit();
         }
 
-        private void methodBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            SetParamControls(Methods.RequestParams(methodBox.Text));
-            adacoTimeStampTextBox.Text = DateTime.Now.ToString();
-        }
 
         // TODO: bindings??
         private void WinequestTabInit()
@@ -74,7 +117,7 @@ namespace AdacoAPI
         private void SetParamControls(List<string> requestParameters = null)
         {
             foreach (
-                var elem in 
+                var elem in
                 winequestTab.Controls.Cast<Control>()
                     .Where(c => string.Equals(c.Tag, "requestParameter"))
                     .OrderBy(c => c.Name)
@@ -108,7 +151,7 @@ namespace AdacoAPI
             {
                 MethodName = methodBox.Text,
                 Endpoint = endpointTextBox.Text,
-                AdacoHeaders = headerSubSet.Where((part, index) => index % 2 == 0).Zip(headerSubSet.Where((part, index) => index % 2 != 0), (k,v) => new {k,v}).ToDictionary(x => x.k, x => x.v),
+                AdacoHeaders = headerSubSet.Where((part, index) => index % 2 == 0).Zip(headerSubSet.Where((part, index) => index % 2 != 0), (k, v) => new { k, v }).ToDictionary(x => x.k, x => x.v),
                 Parameters = paramSubSet.Where((part, index) => index % 2 == 0).Zip(paramSubSet.Where((part, index) => index % 2 != 0), (k, v) => new { k, v }).ToDictionary(x => x.k, x => x.v),
                 Request = requestTextBox.Text
             };
@@ -116,12 +159,28 @@ namespace AdacoAPI
             Data.OnFormData = _onFormData;
         }
 
-        private void PutResponse(string tuc)
+
+        private Task<Uri> PrepareUri()
         {
-            // Highlight here
-            tuc = tuc.Replace("><", ">\n<");
-            responseTextBox.Text = tuc + "\n";
-            XmlHighliter.HighlightRTF(responseTextBox);
+            var result = new TaskCompletionSource<Uri>();
+            var resource = Data.Methods.ResourceByName(_onFormData.MethodName).Replace("{", string.Empty).Replace("}", string.Empty);
+            Uri ready = new Uri(_onFormData.Endpoint + _onFormData.Parameters.Keys.Aggregate(resource, (current, inx) => current.Replace(inx, _onFormData.Parameters[inx])));
+            result.SetResult(ready);
+            return result.Task;
         }
+        
+
+        //private void bgWorker_RunWorkerCompleted(
+        //    object sender,
+        //    RunWorkerCompletedEventArgs e)
+        //{
+        //    foreach (var elem in winequestTab.Controls.Cast<Control>()
+        //        .Where(c => string.Equals(c.Tag, "requestHeader"))
+        //        .OrderBy(c => c.Name))
+        //    {
+        //        elem.Text = "ololo";
+        //    }
+        //    SetParamControls(Methods.RequestParams(methodBox.Text));
+        //}
     }
 }
