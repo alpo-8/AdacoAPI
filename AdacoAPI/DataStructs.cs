@@ -52,7 +52,7 @@ namespace AdacoAPI
             }
             public List<string> RequestParams(string name)
             {
-                List<string> result = this.methodList.First(m => m.Name == name).Resource.Split('{', '}').Where((part, index) => index % 2 != 0).ToList();
+                var result = this.methodList.First(m => m.Name == name).Resource.Split('{', '}').Where((part, index) => index % 2 != 0).ToList();
                 return result;
             }
         }

@@ -122,6 +122,7 @@
             this.adacoAuthorizationTextBox.Size = new System.Drawing.Size(200, 20);
             this.adacoAuthorizationTextBox.TabIndex = 23;
             this.adacoAuthorizationTextBox.Tag = "requestHeader";
+            this.adacoAuthorizationTextBox.Text = "";
             // 
             // adacoAuthorizationLabel
             // 
@@ -151,6 +152,7 @@
             this.adacoTimeStampTextBox.Size = new System.Drawing.Size(200, 20);
             this.adacoTimeStampTextBox.TabIndex = 20;
             this.adacoTimeStampTextBox.Tag = "requestHeader";
+            this.adacoTimeStampTextBox.Text = "";
             // 
             // requestButton
             // 
@@ -161,6 +163,7 @@
             this.requestButton.Text = "Send Request";
             this.requestButton.UseVisualStyleBackColor = true;
             this.requestButton.Click += new System.EventHandler(this.requestButton_Click);
+            this.requestButton.Enabled = false;
             // 
             // responseTextBox
             // 
@@ -262,6 +265,7 @@
             this.param3Label.TabIndex = 7;
             this.param3Label.Tag = "requestParameter";
             this.param3Label.Text = "label3";
+            this.param3Label.Visible = false;
             // 
             // param3TextBox
             // 
@@ -270,6 +274,7 @@
             this.param3TextBox.Size = new System.Drawing.Size(100, 20);
             this.param3TextBox.TabIndex = 6;
             this.param3TextBox.Tag = "requestParameter";
+            this.param3TextBox.Visible = false;
             // 
             // param2TextBox
             // 
@@ -278,6 +283,7 @@
             this.param2TextBox.Size = new System.Drawing.Size(100, 20);
             this.param2TextBox.TabIndex = 5;
             this.param2TextBox.Tag = "requestParameter";
+            this.param2TextBox.Visible = false;
             // 
             // param2Label
             // 
@@ -288,6 +294,7 @@
             this.param2Label.TabIndex = 4;
             this.param2Label.Tag = "requestParameter";
             this.param2Label.Text = "label2";
+            this.param2Label.Visible = false;
             // 
             // param1TextBox
             // 
@@ -296,6 +303,7 @@
             this.param1TextBox.Size = new System.Drawing.Size(100, 20);
             this.param1TextBox.TabIndex = 3;
             this.param1TextBox.Tag = "requestParameter";
+            this.param1TextBox.Visible = false;
             // 
             // param1Label
             // 
@@ -306,6 +314,7 @@
             this.param1Label.TabIndex = 2;
             this.param1Label.Tag = "requestParameter";
             this.param1Label.Text = "label1";
+            this.param1Label.Visible = false;
             // 
             // methodLabel
             // 

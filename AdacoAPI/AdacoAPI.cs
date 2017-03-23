@@ -15,20 +15,14 @@ namespace AdacoAPI
 {
     public partial class AdacoAPIForm : Form
     {
-        private readonly SynchronizationContext synchronizationContext;
-        private DateTime previousTime = DateTime.Now;
-        private BackgroundWorker bgWorker;
         private static FormData _onFormData;
         private static RequestData _currentRequest;
         public AdacoAPIForm()
         {
             InitializeComponent();
-            synchronizationContext = SynchronizationContext.Current;
-            WinequestTabInit();  //? async task??
+             //? async task??
+            _onFormData = new FormData();
             Subscribe(true);
-            //this.bgWorker = new BackgroundWorker();
-            //this.bgWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgWorker_RunWorkerCompleted);
-            //this.PerformLayout();
         }
 
         private void Subscribe(bool action)
@@ -47,9 +41,11 @@ namespace AdacoAPI
         {
             await Task.Run(() =>
             {
-                winequestTab.Controls.Cast<Control>()
-                .FirstOrDefault(c => string.Equals(c.Name, changes.Control))
-                .Text = changes.Text;
+                var target = this.winequestTab.Controls.Cast<Control>()
+                    .FirstOrDefault(c => string.Equals(c.Name, changes.Control));
+                if (target != null)
+                    target
+                        .Text = changes.Text;
             });
         }
 
@@ -58,19 +54,25 @@ namespace AdacoAPI
             await Task.Run(() => XmlHighliter.HighlightRTF(responseTextBox));
         }
 
-        private void methodBox_SelectedIndexChanged(object sender, EventArgs e)
+        private async void methodBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SetParamControls(Methods.RequestParams(methodBox.Text));
+            this.requestButton.Enabled = true;
+            string methodName = methodBox.Text;
 
-            //this.bgWorker.RunWorkerAsync();
+            var controls = winequestTab.Controls.Cast<Control>()
+                .Where(c => string.Equals(c.Tag, "requestParameter"))
+                .OrderBy(c => c.Name)
+                .ToList();
+            controls.All(x => { x.Visible = false; x.Text = String.Empty;
+                                  return true;
+            });
+            await Task.Run(() => SetParamControls(methodName, controls));
+        }
 
-
-            // put param fields
-
-            // put time, 
-            // ON PARAM CHANGED: gen uri, gen auth, put auth
-
-            adacoTimeStampTextBox.Text = DateTime.Now.ToString();
+        private void resetButton_Click(object sender, EventArgs e)
+        {
+            _onFormData = new FormData();
+            InitializeComponent();
         }
 
         private void requestButton_Click(object sender, EventArgs e)
@@ -83,8 +85,6 @@ namespace AdacoAPI
             _onFormData.AdacoHeaders["Adaco-Timestamp"] = auth[0];
             _onFormData.AdacoHeaders["Adaco-Authorization"] = auth[1];
 
-            LoadFormData();
-
             _currentRequest = new DataStructs.RequestData()
             {
                 Method = thisMethod.Type,
@@ -93,48 +93,53 @@ namespace AdacoAPI
             }; // NO MEDIA HERE
         }
 
-        private void resetButton_Click(object sender, EventArgs e)
-        {
-            WinequestTabInit();
-        }
+        //private void WinequestTabInit()
+        //{
+        //    SetParamControls();
+        //    endpointTextBox.Text = "http://ie1adddb01.cloudapp.net/DevelopmentService/API/Product.svc";
+        //    adacoDbInstanceTextBox.Text = "Production";
+        //    adacoUserIdTextBox.Text = "winequest";
+        //    adacoTimeStampTextBox.Text = string.Empty;
+        //    adacoAuthorizationTextBox.Text = string.Empty;
+        //    requestTextBox.Text = string.Empty;
+        //    responseTextBox.Text = string.Empty;
+        //    methodBox.Text = string.Empty;
+        //}
 
-
-        // TODO: bindings??
-        private void WinequestTabInit()
+        private Task<bool> SetParamControls(string methodname, List<Control> controls)
         {
-            SetParamControls();
-            endpointTextBox.Text = "http://ie1adddb01.cloudapp.net/DevelopmentService/API/Product.svc";
-            adacoDbInstanceTextBox.Text = "Production";
-            adacoUserIdTextBox.Text = "winequest";
-            adacoTimeStampTextBox.Text = string.Empty;
-            adacoAuthorizationTextBox.Text = string.Empty;
-            requestTextBox.Text = string.Empty;
-            responseTextBox.Text = string.Empty;
-            methodBox.Text = string.Empty;
-        }
-
-        // TODO: REWRITE USING HANDS
-        private void SetParamControls(List<string> requestParameters = null)
-        {
-            foreach (
-                var elem in
-                winequestTab.Controls.Cast<Control>()
-                    .Where(c => string.Equals(c.Tag, "requestParameter"))
-                    .OrderBy(c => c.Name)
-                    .ToList())
+            var tcs = new TaskCompletionSource<bool>();
+            try
             {
-                elem.Visible = false;
-                elem.Text = string.Empty;
-                if (!(requestParameters?.Count > 0)) continue;
-                elem.Visible = Enabled;
-                if (elem.Name.Contains("Label")) elem.Text = requestParameters[0];
-                else requestParameters.RemoveAt(0);
+                var parameters = Methods.RequestParams(methodname);
+                foreach (var elem in controls.Where(elem => parameters?.Count > 0))
+                {
+                    elem.Visible = Enabled;
+                    if (elem.Name.Contains("Label")) elem.Text = parameters[0];
+                    else parameters.RemoveAt(0);
+                }
+                tcs.SetResult(true);
+                return tcs.Task;
+            }
+            catch
+            {
+                tcs.SetResult(false);
+                return tcs.Task;
             }
         }
 
-        // TODO: REWRITE USING HANDS
-        private void LoadFormData()
+        private static Task<Uri> PrepareUri()
         {
+            var result = new TaskCompletionSource<Uri>();
+            var resource = Data.Methods.ResourceByName(_onFormData.MethodName).Replace("{", string.Empty).Replace("}", string.Empty);
+            Uri ready = new Uri(_onFormData.Endpoint + _onFormData.Parameters.Keys.Aggregate(resource, (current, inx) => current.Replace(inx, _onFormData.Parameters[inx])));
+            result.SetResult(ready);
+            return result.Task;
+        }
+
+        private void LoadData()
+        {
+
             // headers
             var headerSubSet = winequestTab.Controls.Cast<Control>()
                 .Where(c => string.Equals(c.Tag, "requestHeader"))
@@ -149,38 +154,19 @@ namespace AdacoAPI
 
             _onFormData = new DataStructs.FormData
             {
-                MethodName = methodBox.Text,
-                Endpoint = endpointTextBox.Text,
-                AdacoHeaders = headerSubSet.Where((part, index) => index % 2 == 0).Zip(headerSubSet.Where((part, index) => index % 2 != 0), (k, v) => new { k, v }).ToDictionary(x => x.k, x => x.v),
-                Parameters = paramSubSet.Where((part, index) => index % 2 == 0).Zip(paramSubSet.Where((part, index) => index % 2 != 0), (k, v) => new { k, v }).ToDictionary(x => x.k, x => x.v),
-                Request = requestTextBox.Text
+                MethodName = methodBox?.Text,
+                Endpoint = endpointTextBox?.Text,
+                AdacoHeaders = headerSubSet?.Where((part, index) => index % 2 == 0).Zip(headerSubSet.Where((part, index) => index % 2 != 0), (k, v) => new { k, v }).ToDictionary(x => x.k, x => x.v),
+                Parameters = paramSubSet?.Where((part, index) => index % 2 == 0).Zip(paramSubSet.Where((part, index) => index % 2 != 0), (k, v) => new { k, v }).ToDictionary(x => x.k, x => x.v),
+                Request = requestTextBox?.Text
             };
-
-            Data.OnFormData = _onFormData;
         }
 
 
-        private Task<Uri> PrepareUri()
-        {
-            var result = new TaskCompletionSource<Uri>();
-            var resource = Data.Methods.ResourceByName(_onFormData.MethodName).Replace("{", string.Empty).Replace("}", string.Empty);
-            Uri ready = new Uri(_onFormData.Endpoint + _onFormData.Parameters.Keys.Aggregate(resource, (current, inx) => current.Replace(inx, _onFormData.Parameters[inx])));
-            result.SetResult(ready);
-            return result.Task;
-        }
-        
+                //MessageBox.Show("Failed to collect data from the form",
+                //    "What a pity",
+                //    MessageBoxButtons.OK,
+                //    MessageBoxIcon.Error);
 
-        //private void bgWorker_RunWorkerCompleted(
-        //    object sender,
-        //    RunWorkerCompletedEventArgs e)
-        //{
-        //    foreach (var elem in winequestTab.Controls.Cast<Control>()
-        //        .Where(c => string.Equals(c.Tag, "requestHeader"))
-        //        .OrderBy(c => c.Name))
-        //    {
-        //        elem.Text = "ololo";
-        //    }
-        //    SetParamControls(Methods.RequestParams(methodBox.Text));
-        //}
     }
 }
