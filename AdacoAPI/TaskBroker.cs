@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static AdacoAPI.DataStructs;
 using static AdacoAPI.DataValidator;
-using static AdacoAPI.XMLHelper;
 
 namespace AdacoAPI
 {
@@ -32,14 +31,20 @@ namespace AdacoAPI
             }
         }
 
-        private void MessageHandler(object sender, EventDispatcher.MessageArgs contains)
+        private void MessageHandler(object sender, string message)
         {
-            if (!contains.State) EventDispatcher.Instance.RaiseFormMessage(false, "validationErrors");
-            switch (contains.Message)
+            switch (message)
             {
-                case "requestReady":
-                        EventDispatcher.Instance.RaiseFormMessage(true, "requestReady");
-                        EventDispatcher.Instance.RaiseSenderMessage(true, "sendRequest");
+                case "Request Initiated":
+                    EventDispatcher.Instance.RaiseDataMessage("Start validation");
+                    EventDispatcher.Instance.RaiseFormMessage("Validation Started");
+                    break;
+                case "Validation Errors":
+                    EventDispatcher.Instance.RaiseFormMessage("Request not valid");
+                    break;
+                case "Request Collected":
+                        EventDispatcher.Instance.RaiseFormMessage("Request is ready");
+                        //EventDispatcher.Instance.RaiseSenderMessage("Send Request");
                     break;
                 default:
                     break;

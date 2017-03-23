@@ -20,52 +20,52 @@ namespace AdacoAPI
 
         private EventDispatcher() { }
 
-        public class MessageArgs : EventArgs
-        {
-            public MessageArgs(bool s, string mes)
-            {
-                this.state = s;
-                this.message = mes;
-            }
-            private bool state;
-            private string message;
-            public bool State
-            {
-                get { return state; }
-                set { state = value; }
-            }
-            public string Message
-            {
-                get { return message; }
-                set { message = value; }
-            }
-        }
+        //public class MessageArgs : EventArgs
+        //{
+        //    public MessageArgs(bool s, string mes)
+        //    {
+        //        this.state = s;
+        //        this.message = mes;
+        //    }
+        //    private bool state;
+        //    private string message;
+        //    public bool State
+        //    {
+        //        get { return state; }
+        //        set { state = value; }
+        //    }
+        //    public string Message
+        //    {
+        //        get { return message; }
+        //        set { message = value; }
+        //    }
+        //}
 
         // TODO: REWRITE
 
-        public event EventHandler<MessageArgs> MainMessage; // events sent TO MAIN
-        public event EventHandler<MessageArgs> FormMessage; // events sent TO FORM
-        public event EventHandler<MessageArgs> DataMessage; // events sent TO VALIDATOR
-        public event EventHandler<MessageArgs> SenderMessage; // events sent TO SENDER
+        public event EventHandler<string> MainMessage; // events sent TO MAIN
+        public event EventHandler<string> FormMessage; // events sent TO FORM
+        public event EventHandler<string> DataMessage; // events sent TO VALIDATOR
+        public event EventHandler<string> SenderMessage; // events sent TO SENDER
 
-        public void RaiseMainMessage(bool state, string message)
+        public void RaiseMainMessage(string message)
         {
-            MainMessage?.Invoke(this, new MessageArgs(state, message));
+            MainMessage?.Invoke(this, message);
         }
 
-        public void RaiseFormMessage(bool state, string message)
+        public void RaiseFormMessage(string message)
         {
-            FormMessage?.Invoke(this, new MessageArgs(state, message));
+            FormMessage?.Invoke(this, message);
         }
 
-        public void RaiseDataMessage(bool state, string message)
+        public void RaiseDataMessage(string message)
         {
-            DataMessage?.Invoke(this, new MessageArgs(state, message));
+            DataMessage?.Invoke(this, message);
         }
 
-        public void RaiseSenderMessage(bool state, string message)
+        public void RaiseSenderMessage(string message)
         {
-            SenderMessage?.Invoke(this, new MessageArgs(state, message));
+            SenderMessage?.Invoke(this, message);
         }
     }
 }

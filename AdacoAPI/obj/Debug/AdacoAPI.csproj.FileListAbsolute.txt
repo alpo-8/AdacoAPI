@@ -39,3 +39,12 @@ C:\Users\AlPo\Source\Repos\AdacoAPI\AdacoAPI\obj\Debug\AdacoAPI.Properties.Resou
 C:\Users\AlPo\Source\Repos\AdacoAPI\AdacoAPI\obj\Debug\AdacoAPI.csproj.GenerateResource.Cache
 C:\Users\AlPo\Source\Repos\AdacoAPI\AdacoAPI\obj\Debug\AdacoAPI.exe
 C:\Users\AlPo\Source\Repos\AdacoAPI\AdacoAPI\obj\Debug\AdacoAPI.pdb
+C:\Users\apopov\Source\Repos\AdacoAPI\AdacoAPI\bin\Debug\AdacoAPI.exe.config
+C:\Users\apopov\Source\Repos\AdacoAPI\AdacoAPI\bin\Debug\AdacoAPI.exe
+C:\Users\apopov\Source\Repos\AdacoAPI\AdacoAPI\bin\Debug\AdacoAPI.pdb
+C:\Users\apopov\Source\Repos\AdacoAPI\AdacoAPI\obj\Debug\AdacoAPI.csprojResolveAssemblyReference.cache
+C:\Users\apopov\Source\Repos\AdacoAPI\AdacoAPI\obj\Debug\AdacoAPI.AdacoAPIForm.resources
+C:\Users\apopov\Source\Repos\AdacoAPI\AdacoAPI\obj\Debug\AdacoAPI.Properties.Resources.resources
+C:\Users\apopov\Source\Repos\AdacoAPI\AdacoAPI\obj\Debug\AdacoAPI.csproj.GenerateResource.Cache
+C:\Users\apopov\Source\Repos\AdacoAPI\AdacoAPI\obj\Debug\AdacoAPI.exe
+C:\Users\apopov\Source\Repos\AdacoAPI\AdacoAPI\obj\Debug\AdacoAPI.pdb

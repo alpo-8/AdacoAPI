@@ -63,7 +63,7 @@ namespace AdacoAPI
             public Uri Uri { get; set; }
             public Dictionary<string, string> Headers { get; set; }
             public HttpContent Media { get; set; }
-            public RequestData concat(RequestData req1, RequestData req2)
+            public static RequestData concat(RequestData req1, RequestData req2)
             {
                 req1.Method = (req1.Method.Length > req2.Method.Length) ? req1.Method : req2.Method;
                 req1.Uri = (req1.Uri.ToString().Length > req2.Uri.ToString().Length) ? req1.Uri : req2.Uri;

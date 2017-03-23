@@ -8,15 +8,17 @@ using static AdacoAPI.DataStructs;
 
 namespace AdacoAPI
 {
-    public static class AuthKey
+    static class AuthKey
     {
         private static readonly HMACMD5 hmac = new HMACMD5(Encoding.ASCII.GetBytes("016FC98C-22B9-40AC-80A2-C47D916F5548"));
 
-        public static RequestData GenerateAuthHeader(RequestData request)
+        public static string GenerateAuthHeader(Uri uri, string time)
         {
-            request.Headers["Adaco-Timestamp"] = DateTime.Now.ToString();
-            request.Headers["Adaco-Authorization"] = Convert.ToBase64String(hmac.ComputeHash(Encoding.ASCII.GetBytes(request.Uri.ToString() + request.Headers["Adaco-Timestamp"])));
-            return request;
+            return Convert.ToBase64String(hmac.ComputeHash(Encoding.ASCII.GetBytes(uri.ToString() + time)));
+
+            //request.Headers["Adaco-Timestamp"] = DateTime.Now.ToString();
+            //request.Headers["Adaco-Authorization"] = Convert.ToBase64String(hmac.ComputeHash(Encoding.ASCII.GetBytes(request.Uri.ToString() + time)));
+            //return result;
         }
     }
 }

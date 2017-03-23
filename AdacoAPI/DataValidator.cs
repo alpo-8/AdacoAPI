@@ -33,26 +33,30 @@ namespace AdacoAPI
             }
         }
 
-        private void MessageHandler(object sender, EventDispatcher.MessageArgs contains)
+        private void MessageHandler(object sender, string message)
         {
-            //EventDispatcher.Instance.RaiseFormMessage(true, "validation started");
-            StartValidation();
+            switch (message)
+            {
+                case "Start validation":
+                    StartValidation();
+                    break;
+            }
         }
 
         private void StartValidation()
         {
             _onFormData = Data.OnFormData;
-            // Also here we send request media to parser IF NEEDED
-            // if it's parsed successfully, it's put in 
 
             if ((_onFormData.Request == "fail") & (!ValidationItself()))
             {
                 _validationErrorList = "many errors";
-                EventDispatcher.Instance.RaiseMainMessage(false, _validationErrorList);
+                EventDispatcher.Instance.RaiseMainMessage("Validation Errors");  // TODO: should pass _validationErrorList to the form
             }
             else
             {
                 CollectRequestData();
+                // Also here we send request media to parser IF NEEDED
+                // if it's parsed successfully, it's put in 
             }
         }
 
@@ -65,24 +69,23 @@ namespace AdacoAPI
         private static async void CollectRequestData()
         {
             var thisMethod = Data.Methods.MethodStructByName(_onFormData.MethodName);
-
             var resource = thisMethod.Resource.Replace("{", string.Empty).Replace("}", string.Empty);
-            resource = _onFormData.Parameters.Keys.Aggregate(resource, (current, inx) => current.Replace(inx, _onFormData.Parameters[inx]));
 
             _currentRequest = new DataStructs.RequestData()
             {
                 Method = thisMethod.Type,
-                Uri = new Uri(_onFormData.Endpoint + resource),
+                Uri = new Uri(_onFormData.Endpoint + _onFormData.Parameters.Keys.Aggregate(resource, (current, inx) => current.Replace(inx, _onFormData.Parameters[inx]))),
                 Headers = _onFormData.AdacoHeaders
-            }; //NO MEDIA HERE, see parser
+            }; //NO MEDIA HERE
+            _currentRequest.Headers["Adaco-Authorization"] = AuthKey.GenerateAuthHeader(_currentRequest.Uri,_currentRequest.Headers["Adaco-Timestamp"]);
 
-            // TODO: rewrite auth calling
-            Data.CurrentRequest = AuthKey.GenerateAuthHeader(_currentRequest);
 
-            Task<string> task = RequestSender.SendRequest(Data.CurrentRequest);
+            Data.CurrentRequest = _currentRequest;
+            EventDispatcher.Instance.RaiseMainMessage("Request Collected");
+            Task<string> task = RequestSender.SendRequest(Data.CurrentRequest); // TODO: return headers on UI
             string result = await task;
-            EventDispatcher.Instance.RaiseMainMessage(true, "requestIsReady");
-            EventDispatcher.Instance.RaiseFormMessage(false, result);
+
+            EventDispatcher.Instance.RaiseFormMessage(result);
         }
     }
 }

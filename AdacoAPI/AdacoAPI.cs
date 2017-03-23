@@ -7,7 +7,6 @@ using System.Xml;
 using static AdacoAPI.Data;
 using static AdacoAPI.DataStructs;
 using System.Xml.Linq;
-using ColorCode;
 
 namespace AdacoAPI
 {
@@ -33,9 +32,9 @@ namespace AdacoAPI
             }
         }
 
-        private void MessageHandler(object sender, EventDispatcher.MessageArgs contains)
+        private void MessageHandler(object sender, string message)
         {
-            PutResponse(new CodeColorizer().Colorize(contains.Message, Languages.Xml));
+            PutResponse(message);
         }
 
         private void requestButton_Click(object sender, EventArgs e)
@@ -43,7 +42,7 @@ namespace AdacoAPI
             LoadFormData();
             responseTextBox.Text = string.Empty;
             new DataValidator();
-            EventDispatcher.Instance.RaiseDataMessage(true, "startValidation");
+            EventDispatcher.Instance.RaiseMainMessage("Request Initiated");
         }
 
         private void resetButton_Click(object sender, EventArgs e)
@@ -54,6 +53,7 @@ namespace AdacoAPI
         private void methodBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             SetParamControls(Methods.RequestParams(methodBox.Text));
+            adacoTimeStampTextBox.Text = DateTime.Now.ToString();
         }
 
         // TODO: bindings??
@@ -118,7 +118,10 @@ namespace AdacoAPI
 
         private void PutResponse(string tuc)
         {
-            responseTextBox.Text += tuc + "\n";
+            // Highlight here
+            tuc = tuc.Replace("><", ">\n<");
+            responseTextBox.Text = tuc + "\n";
+            XmlHighliter.HighlightRTF(responseTextBox);
         }
     }
 }

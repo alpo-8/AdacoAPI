@@ -128,7 +128,7 @@
             this.adacoAuthorizationLabel.AutoSize = true;
             this.adacoAuthorizationLabel.Location = new System.Drawing.Point(680, 62);
             this.adacoAuthorizationLabel.Name = "adacoAuthorizationLabel";
-            this.adacoAuthorizationLabel.Size = new System.Drawing.Size(105, 13);
+            this.adacoAuthorizationLabel.Size = new System.Drawing.Size(102, 13);
             this.adacoAuthorizationLabel.TabIndex = 22;
             this.adacoAuthorizationLabel.Tag = "requestHeader";
             this.adacoAuthorizationLabel.Text = "Adaco-Authorization";
@@ -138,7 +138,7 @@
             this.adacoTimeStampLabel.AutoSize = true;
             this.adacoTimeStampLabel.Location = new System.Drawing.Point(690, 36);
             this.adacoTimeStampLabel.Name = "adacoTimeStampLabel";
-            this.adacoTimeStampLabel.Size = new System.Drawing.Size(95, 13);
+            this.adacoTimeStampLabel.Size = new System.Drawing.Size(92, 13);
             this.adacoTimeStampLabel.TabIndex = 21;
             this.adacoTimeStampLabel.Tag = "requestHeader";
             this.adacoTimeStampLabel.Text = "Adaco-Timestamp";
@@ -169,6 +169,7 @@
             this.responseTextBox.Size = new System.Drawing.Size(370, 400);
             this.responseTextBox.TabIndex = 18;
             this.responseTextBox.Text = "";
+            this.responseTextBox.WordWrap = false;
             // 
             // responseLabel
             // 
@@ -210,7 +211,7 @@
             this.adacoUserIdLabel.AutoSize = true;
             this.adacoUserIdLabel.Location = new System.Drawing.Point(305, 62);
             this.adacoUserIdLabel.Name = "adacoUserIdLabel";
-            this.adacoUserIdLabel.Size = new System.Drawing.Size(74, 13);
+            this.adacoUserIdLabel.Size = new System.Drawing.Size(71, 13);
             this.adacoUserIdLabel.TabIndex = 12;
             this.adacoUserIdLabel.Tag = "requestHeader";
             this.adacoUserIdLabel.Text = "Adaco-Userid";
@@ -220,7 +221,7 @@
             this.adacoDbInstanceLabel.AutoSize = true;
             this.adacoDbInstanceLabel.Location = new System.Drawing.Point(279, 36);
             this.adacoDbInstanceLabel.Name = "adacoDbInstanceLabel";
-            this.adacoDbInstanceLabel.Size = new System.Drawing.Size(100, 13);
+            this.adacoDbInstanceLabel.Size = new System.Drawing.Size(97, 13);
             this.adacoDbInstanceLabel.TabIndex = 11;
             this.adacoDbInstanceLabel.Tag = "requestHeader";
             this.adacoDbInstanceLabel.Text = "Adaco-DBInstance";
